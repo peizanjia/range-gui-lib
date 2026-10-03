@@ -1,5 +1,6 @@
 #include <QStyleFactory>
 #include <QDir>
+#include <QFileInfo>
 #include <QDesktopServices>
 #include <QImageWriter>
 #include <QStandardPaths>
@@ -465,6 +466,14 @@ QString RApplicationSettings::getHomeDir()
 
 QString RApplicationSettings::getAppHomeDir()
 {
+    // DocumentsLocation is not redirected by Qt's test mode. Keep application
+    // data beside the isolated test settings so GUI acceptance never touches a
+    // user's model, material, session or audit directories.
+    if (QStandardPaths::isTestModeEnabled())
+    {
+        const QSettings settings;
+        return RApplicationSettings::getDir(QFileInfo(settings.fileName()).absolutePath(), "test-runtime");
+    }
     return RApplicationSettings::getDir(RApplicationSettings::getDir(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation),RVendor::familyName()),RVendor::shortName());
 }
 
