@@ -6,6 +6,7 @@
 #include <QStandardPaths>
 #include <QGuiApplication>
 #include <QStyleHints>
+#include <stdexcept>
 
 #include <rbl_logger.h>
 #include <rbl_utils.h>
@@ -466,6 +467,22 @@ QString RApplicationSettings::getHomeDir()
 
 QString RApplicationSettings::getAppHomeDir()
 {
+    const QString profile = qEnvironmentVariable("RANGE_APPLICATION_PROFILE_DIR");
+    if (!profile.isEmpty())
+    {
+        const QFileInfo root(profile);
+        const QString canonical = root.canonicalFilePath();
+        if (!root.isAbsolute() || !root.isDir() || root.isSymLink() || root.isJunction() || canonical.isEmpty())
+            throw std::runtime_error("Application profile directory is unavailable or aliased");
+        const QString data = QDir(canonical).filePath("application-data");
+        if (!QDir().mkpath(data))
+            throw std::runtime_error("Application profile data directory cannot be created");
+        const QFileInfo info(data);
+        if (!info.isDir() || info.isSymLink() || info.isJunction()
+            || QDir::cleanPath(info.canonicalFilePath()).compare(QDir::cleanPath(data), Qt::CaseInsensitive) != 0)
+            throw std::runtime_error("Application profile data directory escaped its profile");
+        return info.canonicalFilePath();
+    }
     // DocumentsLocation is not redirected by Qt's test mode. Keep application
     // data beside the isolated test settings so GUI acceptance never touches a
     // user's model, material, session or audit directories.

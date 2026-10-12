@@ -42,7 +42,8 @@ void RSoftwareUpdateChecker::refreshCloudFiles()
     {
         try
         {
-            this->softwareManager->checkForUpdates();
+            // Bound background metadata checks without limiting file transfers.
+            this->softwareManager->checkForUpdates(RHttpClientSettings::defaultTimeout);
         }
         catch (const RError &rError)
         {
