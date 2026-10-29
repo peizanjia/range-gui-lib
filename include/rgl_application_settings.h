@@ -41,8 +41,10 @@ class RApplicationSettings : public QSettings
 
         //! Cloud session file name without path.
         static const QString cloudSessionFileName;
+#if RANGE_ENABLE_AGENT
         //! AI agent settings file name without path.
         static const QString aiAgentSettingsFileName;
+#endif
         //! Log file name without path.
         static const QString logFileName;
         //! License file name without path.
@@ -93,8 +95,10 @@ class RApplicationSettings : public QSettings
         //! Return cloud session file name.
         QString getCloudSessionFileName() const;
 
+#if RANGE_ENABLE_AGENT
         //! Return AI agent settings file name.
         QString getAiAgentSettingsFileName() const;
+#endif
 
         //! Return log file name.
         QString getLogFileName() const;

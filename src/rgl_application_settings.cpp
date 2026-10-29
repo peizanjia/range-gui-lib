@@ -19,7 +19,9 @@ const QString RApplicationSettings::Language::Sk::Code = "sk";
 const QString RApplicationSettings::Language::Sk::Name = "Slovensky";
 
 const QString RApplicationSettings::cloudSessionFileName("cloudSession.json");
+#if RANGE_ENABLE_AGENT
 const QString RApplicationSettings::aiAgentSettingsFileName("aiAgentSettings.json");
+#endif
 const QString RApplicationSettings::logFileName("application.log");
 const QString RApplicationSettings::licenseFileName("LICENSE.txt");
 const QString RApplicationSettings::releaseNotesFileName("RELEASE_NOTES.txt");
@@ -68,10 +70,12 @@ QString RApplicationSettings::getCloudSessionFileName() const
     return this->getSessionDir() + QDir::separator() + RApplicationSettings::cloudSessionFileName;
 }
 
+#if RANGE_ENABLE_AGENT
 QString RApplicationSettings::getAiAgentSettingsFileName() const
 {
     return this->getSessionDir() + QDir::separator() + RApplicationSettings::aiAgentSettingsFileName;
 }
+#endif
 
 QString RApplicationSettings::getLogFileName() const
 {

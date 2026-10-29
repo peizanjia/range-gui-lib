@@ -85,6 +85,7 @@ const RCloudFileManager *RApplication::getCloudFileManager() const
     return this->cloudFileManager;
 }
 
+#if RANGE_ENABLE_AGENT
 const RAgentSettingsManager *RApplication::getAiAgentSettingsManager() const
 {
     return this->aiAgentSettingsManager;
@@ -94,6 +95,7 @@ RAgentSettingsManager *RApplication::getAiAgentSettingsManager()
 {
     return this->aiAgentSettingsManager;
 }
+#endif
 
 const RApplicationSettings *RApplication::getApplicationSettings() const
 {
@@ -459,6 +461,7 @@ void RApplication::onStarted()
         }
     }
 
+#if RANGE_ENABLE_AGENT
     // Initialize AI agent settings manager
     this->aiAgentSettingsManager = new RAgentSettingsManager(this);
     QString aiAgentSettingsFileName = this->applicationSettings->getAiAgentSettingsFileName();
@@ -473,6 +476,7 @@ void RApplication::onStarted()
             RLogger::warning("Failed to read the AI agent settings manager file \'%s\'. ERROR: %s\n",aiAgentSettingsFileName.toUtf8().constData(),rError.getMessage().toUtf8().constData());
         }
     }
+#endif
 
     // Register data directory to be updated in case of new software version
     this->updaterSourceDirs.append("data");
@@ -597,6 +601,7 @@ void RApplication::onAboutToQuit()
         RLogger::error("Failed to write the cloud session file \'%s\'. ERROR: %s\n",cloudSessionFileName.toUtf8().constData(),error.getMessage().toUtf8().constData());
     }
 
+#if RANGE_ENABLE_AGENT
     // Store AI agent settings session
     QString aiAgentSettingsFileName = this->applicationSettings->getAiAgentSettingsFileName();
     try
@@ -607,6 +612,7 @@ void RApplication::onAboutToQuit()
     {
         RLogger::error("Failed to write the AI agent settings session file \'%s\'. ERROR: %s\n",aiAgentSettingsFileName.toUtf8().constData(),error.getMessage().toUtf8().constData());
     }
+#endif
 
     this->finalize();
 

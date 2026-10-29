@@ -11,11 +11,6 @@ qt_add_library(range-gui-lib
         src/rgl_access_owner_dialog.cpp
         src/rgl_action.cpp
         src/rgl_action_list.cpp
-        src/rgl_ai_agent_settings_list_widget.cpp
-        src/rgl_ai_agent_settings_manager_dialog.cpp
-        src/rgl_ai_agent_settings_manager_widget.cpp
-        src/rgl_ai_agent_settings_widget.cpp
-        src/rgl_ai_chat_widget.cpp
         src/rgl_application.cpp
         src/rgl_application_settings.cpp
         src/rgl_application_settings_dialog.cpp
@@ -25,7 +20,6 @@ qt_add_library(range-gui-lib
         src/rgl_cloud_file_manager_dialog.cpp
         src/rgl_cloud_file_manager_widget.cpp
 
-        src/rgl_cloud_ai_query_widget.cpp
         src/rgl_cloud_report_sender.cpp
         src/rgl_cloud_session_dialog.cpp
         src/rgl_cloud_session_widget.cpp
@@ -70,11 +64,6 @@ qt_add_library(range-gui-lib
         include/rgl_access_owner_dialog.h
         include/rgl_action.h
         include/rgl_action_list.h
-        include/rgl_ai_agent_settings_list_widget.h
-        include/rgl_ai_agent_settings_manager_dialog.h
-        include/rgl_ai_agent_settings_manager_widget.h
-        include/rgl_ai_agent_settings_widget.h
-        include/rgl_ai_chat_widget.h
         include/rgl_application.h
         include/rgl_application_settings.h
         include/rgl_application_settings_dialog.h
@@ -84,7 +73,6 @@ qt_add_library(range-gui-lib
         include/rgl_cloud_file_manager_dialog.h
         include/rgl_cloud_file_manager_widget.h
 
-        include/rgl_cloud_ai_query_widget.h
         include/rgl_cloud_report_sender.h
         include/rgl_cloud_session_dialog.h
         include/rgl_cloud_session_widget.h
@@ -126,6 +114,23 @@ qt_add_library(range-gui-lib
         include/rgl_tree_widget.h
 )
 
+if(RANGE_ENABLE_AGENT)
+    target_sources(range-gui-lib PRIVATE
+        src/rgl_ai_agent_settings_list_widget.cpp
+        src/rgl_ai_agent_settings_manager_dialog.cpp
+        src/rgl_ai_agent_settings_manager_widget.cpp
+        src/rgl_ai_agent_settings_widget.cpp
+        src/rgl_ai_chat_widget.cpp
+        src/rgl_cloud_ai_query_widget.cpp
+        include/rgl_ai_agent_settings_list_widget.h
+        include/rgl_ai_agent_settings_manager_dialog.h
+        include/rgl_ai_agent_settings_manager_widget.h
+        include/rgl_ai_agent_settings_widget.h
+        include/rgl_ai_chat_widget.h
+        include/rgl_cloud_ai_query_widget.h
+    )
+endif()
+
 # Include directories
 target_include_directories(range-gui-lib
     PUBLIC
@@ -135,10 +140,12 @@ target_include_directories(range-gui-lib
 target_link_libraries(range-gui-lib
     PUBLIC
         range-cloud-lib
-        range-ai-lib
         Qt6::Widgets
         common_defines
 )
+if(RANGE_ENABLE_AGENT)
+    target_link_libraries(range-gui-lib PUBLIC range-ai-lib)
+endif()
 target_link_libraries(range-gui-lib PRIVATE Qt6::Core)
 target_link_libraries(range-gui-lib PRIVATE Qt6::Core)
 target_link_libraries(range-gui-lib PRIVATE Qt6::Widgets)

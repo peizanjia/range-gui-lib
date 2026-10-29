@@ -1,6 +1,8 @@
 #ifndef RGL_CLOUD_AI_QUERY_WIDGET_H
 #define RGL_CLOUD_AI_QUERY_WIDGET_H
 
+#if RANGE_ENABLE_AGENT
+
 #include <rcl_cloud_ai_query_response.h>
 #include <rcl_file_info.h>
 #include <rcl_cloud_client.h>
@@ -152,5 +154,7 @@ class RCloudAiQueryWidget : public QWidget
         void onWaitingTimeout();
 
 };
+
+#endif // RANGE_ENABLE_AGENT
 
 #endif // RGL_CLOUD_AI_QUERY_WIDGET_H

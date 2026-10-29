@@ -8,7 +8,9 @@
 
 #include <rcl_cloud_session_manager.h>
 
+#if RANGE_ENABLE_AGENT
 #include <rai_agent_settings_manager.h>
+#endif
 
 #include "rgl_application_settings.h"
 #include "rgl_action_list.h"
@@ -30,8 +32,10 @@ class RApplication : public QApplication
         RCloudConnectionHandler *cloudConnectionHandler;
         //! Cloud file manager syncing the data directory.
         RCloudFileManager *cloudFileManager;
+#if RANGE_ENABLE_AGENT
         //! AI agent settings manager.
         RAgentSettingsManager *aiAgentSettingsManager;
+#endif
         //! Application settings.
         RApplicationSettings *applicationSettings;
         //! List of actions.
@@ -70,11 +74,13 @@ class RApplication : public QApplication
         //! Return const pointer to cloud file manager.
         const RCloudFileManager *getCloudFileManager() const;
 
+#if RANGE_ENABLE_AGENT
         //! Return const reference to AI agent settings manager.
         const RAgentSettingsManager *getAiAgentSettingsManager() const;
 
         //! Return reference to AI agent settings manager.
         RAgentSettingsManager *getAiAgentSettingsManager();
+#endif
 
         //! Return const pointer to application settings.
         const RApplicationSettings *getApplicationSettings() const;
